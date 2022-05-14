@@ -1,4 +1,6 @@
 using ADS_Project.Repository;
+using JonathanRo_MVc.Data;
+using JonathanRo_MVc.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,11 +27,18 @@ namespace JonathanRo_MVc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             // Inyeccion de dependencias
-            services.AddSingleton<IEstudianteRepository, EstudianteRepository>();
-            services.AddSingleton<IMateriaRepository, MateriaRepository>();
-            services.AddSingleton<IProfesorRepository, ProfesorRepository>();
-            services.AddSingleton<ICarreraRepository, CarreraRepository>();
+            services.AddTransient<IEstudianteRepository, EstudianteRepository>();
+            services.AddTransient<IMateriaRepository, MateriaRepository>();
+            services.AddTransient<IProfesorRepository, ProfesorRepository>();
+            services.AddTransient<ICarreraRepository, CarreraRepository>();
+            services.AddTransient<IGrupoRepository, GrupoRepository>();
+
+            //Configuracion de DB
+            services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,10 +51,7 @@ namespace JonathanRo_MVc
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
             }
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

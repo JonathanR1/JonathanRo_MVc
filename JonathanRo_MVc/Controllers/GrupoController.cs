@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using JonathanRo_MVc.Models;
+using ADS_Project.Utils;
+using JonathanRo_MVc.Repository;
+using ADS_Project.Models;
 
 namespace JonathanRo_MVc.Controllers
 {
